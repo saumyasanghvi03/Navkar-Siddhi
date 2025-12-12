@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useToast } from '../hooks/use-toast';
 
-const MalaRing = ({ totalNavkars, currentTheme }) => {
-  const count = totalNavkars % 108;
-  const beads = Array.from({ length: 108 }, (_, i) => i);
+const MalaRing = ({ totalNavkars, currentTheme, malaSize = 108 }) => {
+  const { toast } = useToast();
+  const count = totalNavkars % malaSize;
+  const beads = Array.from({ length: malaSize }, (_, i) => i);
+  // Track previous count to prevent toast on mount
+  const prevTotalRef = useRef(totalNavkars);
+
+  useEffect(() => {
+    if (prevTotalRef.current !== totalNavkars) {
+      if (totalNavkars > 0 && totalNavkars % malaSize === 0) {
+        toast({
+          title: "Mala Complete!",
+          description: `You have completed ${malaSize} Navkars.`,
+          duration: 3000,
+          className: "bg-green-50 border-green-200 text-green-900",
+        });
+      }
+      prevTotalRef.current = totalNavkars;
+    }
+  }, [totalNavkars, malaSize, toast]);
 
   // SVG Config
   const radius = 140;
@@ -13,7 +31,7 @@ const MalaRing = ({ totalNavkars, currentTheme }) => {
   const activeColor = currentTheme ? currentTheme.gridFill : '#b91c1c';
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-auto z-10">
       <svg
         viewBox="0 0 320 320"
         className="w-[85vmin] h-[85vmin] max-w-[500px] max-h-[500px] opacity-80"
@@ -21,25 +39,35 @@ const MalaRing = ({ totalNavkars, currentTheme }) => {
         {beads.map((i) => {
           // Calculate position
           // Start from top ( -90 degrees)
-          const angle = (i * (360 / 108)) - 90;
+          const angle = (i * (360 / malaSize)) - 90;
           const radian = (angle * Math.PI) / 180;
           const x = centerX + radius * Math.cos(radian);
           const y = centerY + radius * Math.sin(radian);
 
           const isCompleted = i < count;
-          const isCurrent = i === count - 1;
+          // If count is 0 (just completed), show full ring completion briefly or reset? 
+          // Current logic: i < 0 is false. So empty ring.
+          // That's fine for "new mala start".
+
+          const isCurrent = i === (count === 0 ? malaSize - 1 : count - 1);
+          // If count is 0, no bead is current? Or maybe the last one was?
+          // Visually, reset means empty.
+
+          // Let's stick to simple logic:
+          const activeBeadIndex = count - 1;
+          const isCurrentBead = i === activeBeadIndex;
 
           return (
             <circle
               key={i}
               cx={x}
               cy={y}
-              r={isCurrent ? 4 : 2.5}
+              r={malaSize < 20 ? (isCurrentBead ? 10 : 6) : (isCurrentBead ? 4 : 2.5)}
               fill={isCompleted ? activeColor : '#d1d5db'}
               className="transition-all duration-300"
               style={{
-                 fill: isCompleted ? activeColor : undefined,
-                 opacity: isCompleted ? 0.9 : 0.4
+                fill: isCompleted ? activeColor : undefined,
+                opacity: isCompleted ? 0.9 : 0.4
               }}
             />
           );

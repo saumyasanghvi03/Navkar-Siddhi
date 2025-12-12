@@ -15,11 +15,14 @@ const ProgressGrid = ({ totalNavkars, currentTheme }) => {
         {boxes.map((i) => (
           <div
             key={i}
-            className="aspect-square rounded-[1px] w-full transition-colors duration-200"
+            className="aspect-square rounded-[1px] w-full transition-colors duration-200 flex items-center justify-center text-[8px] sm:text-[10px] font-medium"
             style={{
-              backgroundColor: i < filledCount ? activeFill : 'rgba(0,0,0,0.1)'
+              backgroundColor: i < filledCount ? activeFill : 'rgba(0,0,0,0.1)',
+              color: i < filledCount ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.4)'
             }}
-          />
+          >
+            {i + 1}
+          </div>
         ))}
       </div>
     </div>

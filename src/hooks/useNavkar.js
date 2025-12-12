@@ -1,92 +1,184 @@
+// src/hooks/useNavkar.js
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import { museManager } from '../lib/muse-client';
+import { useTapBiofeedback } from './useTapBiofeedback';
+import { useOrganicMetric } from './useOrganicMetric';
 import { MANTRA_WORDS, LINE_BREAKS, THEMES, AUTO_SCROLL_SPEEDS } from '../utils/constants';
 
 const HISTORY_KEY = 'navkar_history';
-const TOTAL_KEY = 'totalCount'; // Keeping legacy key for backward compatibility or migration
+const TOTAL_KEY = 'totalCount'; // legacy key
 const PREF_KEY = 'navkar_prefs';
 
 export const useNavkar = () => {
-  // --- State ---
+  // State
   const [totalNavkars, setTotalNavkars] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isClearing, setIsClearing] = useState(false);
 
   // Settings
-  const [mode, setMode] = useState('GRID'); // 'GRID' | 'RING'
-  const [autoScroll, setAutoScroll] = useState(false);
-  const [scrollSpeed, setScrollSpeed] = useState('MEDIUM'); // 'SLOW', 'MEDIUM', 'FAST'
+  const [mode, setMode] = useState('GRID'); // GRID | RING
+  const [useMuseEnabled, setUseMuseEnabled] = useState(false);
+  const [malaSize, setMalaSize] = useState(108); // 9 | 27 | 108
   const [showDashboard, setShowDashboard] = useState(false);
 
-  // History [{ date: 'YYYY-MM-DD', navkars: 0, malas: 0 }]
+  // Biofeedback (Tap vs Muse)
+  const { score: tapFocus, calm: tapCalm, onTap: recordTap } = useTapBiofeedback();
+
+  // Real Hardware State
+  const [museMetrics, setMuseMetrics] = useState({ focus: 0, calm: 0, connected: false });
+
+  // Connect/Subscribe to Muse
+  useEffect(() => {
+    let sub;
+    if (useMuseEnabled) {
+      museManager.connect().catch(err => {
+        console.error('Muse connect error:', err);
+        setUseMuseEnabled(false); // Reset if failed
+      });
+
+      sub = museManager.metrics$.subscribe(data => {
+        setMuseMetrics(data);
+      });
+    } else {
+      museManager.disconnect();
+    }
+    return () => {
+      if (sub) sub.unsubscribe();
+      museManager.disconnect();
+    };
+  }, [useMuseEnabled]);
+
+  // Determine Source of Truth
+  // If Muse is connected and streaming, use it. Else use Taps.
+  const isMuseActive = useMuseEnabled && museMetrics.connected;
+
+  const rawFocus = isMuseActive ? museMetrics.focus : tapFocus;
+  const rawCalm = isMuseActive ? museMetrics.calm : tapCalm;
+
+  // Make them alive!
+  // Lower intensity for realistic, subtle breathing
+  const focus = useOrganicMetric(rawFocus, 1.0);
+  const calm = useOrganicMetric(rawCalm, 0.8);
+
+  const [neuroModeEnabled, setNeuroModeEnabled] = useState(true);
+  const toggleNeuroMode = () => setNeuroModeEnabled(prev => !prev);
+  const toggleUseMuse = () => setUseMuseEnabled(prev => !prev);
+
+  // Compute Brain State based on metrics
+  // Gold: High Focus + High Calm (Flow/Gamma)
+  // Cyan: High Focus (Active/Beta)
+  // Indigo: High Calm (Deep/Theta)
+  // Orange: Distracted (Low Focus, Low Calm)
+  const brainState = useMemo(() => {
+    if (focus >= 80 && calm >= 80) return 'gold';
+    if (focus >= 60) return 'cyan';
+    if (calm >= 60) return 'indigo';
+    return 'orange';
+  }, [focus, calm]);
+
+  // History
   const [history, setHistory] = useState([]);
 
-  // --- Initialization ---
+  // Initialization
   useEffect(() => {
-    // Load persisted data
     const savedTotal = localStorage.getItem(TOTAL_KEY);
     if (savedTotal) setTotalNavkars(Number(savedTotal));
-
     const savedHistory = localStorage.getItem(HISTORY_KEY);
     if (savedHistory) setHistory(JSON.parse(savedHistory));
-
     const savedPrefs = localStorage.getItem(PREF_KEY);
     if (savedPrefs) {
       const prefs = JSON.parse(savedPrefs);
       setMode(prefs.mode || 'GRID');
-      setScrollSpeed(prefs.scrollSpeed || 'MEDIUM');
+      // setScrollSpeed(prefs.scrollSpeed || 'MEDIUM'); // Removed legacy
+      if (prefs.malaSize) setMalaSize(prefs.malaSize);
     }
   }, []);
 
-  // --- Persistence Wrappers ---
-  const persistTotal = (newTotal) => {
+  // Persistence helpers
+  const persistTotal = newTotal => {
     localStorage.setItem(TOTAL_KEY, newTotal.toString());
     setTotalNavkars(newTotal);
   };
 
-  const persistHistory = (newTotal) => {
-    // Update today's entry
+  const persistHistory = (newTotal, currentFocus = 0, currentCalm = 0) => {
     const today = new Date().toISOString().split('T')[0];
     const newHistory = [...history];
-    const todayIndex = newHistory.findIndex(h => h.date === today);
+    const todayIdx = newHistory.findIndex(h => h.date === today);
 
-    if (todayIndex >= 0) {
-      newHistory[todayIndex].navkars += 1;
-      // Recalculate malas for today?
-      // Actually we just track navkars, Malas is derived.
-      // But maybe we want to track Malas specifically?
-      // The prompt said "Navkars today, Malas today".
-      // Let's just store navkars, and we can derive Malas = floor(navkars/108) for display,
-      // or simplistic:
-      if ((newHistory[todayIndex].navkars % 108) === 0) {
-        newHistory[todayIndex].malas = (newHistory[todayIndex].malas || 0) + 1;
+    // Stability Score for this mantra (0-100)
+    const mantraScore = Math.round((currentFocus + currentCalm) / 2);
+
+    if (todayIdx >= 0) {
+      newHistory[todayIdx].navkars += 1;
+      // Initialize if missing (backward compat)
+      newHistory[todayIdx].stabilitySum = (newHistory[todayIdx].stabilitySum || 0) + mantraScore;
+      newHistory[todayIdx].samples = (newHistory[todayIdx].samples || 0) + 1;
+
+      if (newHistory[todayIdx].navkars % 108 === 0) {
+        newHistory[todayIdx].malas = (newHistory[todayIdx].malas || 0) + 1;
       }
     } else {
-      newHistory.push({ date: today, navkars: 1, malas: 0 });
+      newHistory.push({
+        date: today,
+        navkars: 1,
+        malas: 0,
+        stabilitySum: mantraScore,
+        samples: 1
+      });
     }
-
     localStorage.setItem(HISTORY_KEY, JSON.stringify(newHistory));
     setHistory(newHistory);
   };
 
-  const savePrefs = (newMode, newSpeed) => {
-    const prefs = { mode: newMode, scrollSpeed: newSpeed };
+  const savePrefs = (newMode, newSize) => {
+    const prefs = { mode: newMode, malaSize: newSize };
     localStorage.setItem(PREF_KEY, JSON.stringify(prefs));
   };
 
-  // --- Computed Properties ---
-  const malaCount = Math.floor(totalNavkars / 108);
+  const updateMalaSize = (size) => {
+    setMalaSize(size);
+    savePrefs(mode, size);
+  };
 
-  // Theme Logic: Cycle every 108.
-  // Mala 0 -> Default (Line Based BG).
-  // Mala 1 -> Theme 0 (Arihant)
-  // Mala 2 -> Theme 1 (Siddha)
-  // ...
+  // Complexity Levels
+  const [complexity, setComplexity] = useState('ADVANCED'); // BASIC | INTERMEDIATE | ADVANCED
+
+  const setComplexityMode = (level) => {
+    setComplexity(level);
+    // Auto-configure features based on level
+    if (level === 'BASIC') {
+      setNeuroModeEnabled(false);
+      setUseMuseEnabled(false);
+    } else if (level === 'INTERMEDIATE') {
+      setNeuroModeEnabled(false);
+      setUseMuseEnabled(false);
+    } else {
+      // Advanced
+      setNeuroModeEnabled(true);
+      // Don't auto-enable Muse, let user decide, but enable the capability
+    }
+  };
+
+  const resetSession = () => {
+    // Reset immediately (User reported confirm issue)
+    setTotalNavkars(0);
+    setCurrentIndex(-1);
+    setIsClearing(false);
+    localStorage.setItem(TOTAL_KEY, '0');
+  };
+
+  // Computed values
+  const malaCount = Math.floor(totalNavkars / malaSize);
+  const navkarsInMala = totalNavkars % malaSize;
+  // So likely standard logic relies on 108 for "Mala Count" display, but ring behavior adapts to size.
+  // I'll leave `malaCount` as standard 108 for now to avoid confusion or ask user if needed. 
+  // Actually, let's stick to standard 108 for global count, but MalaRing will handle local cycles.
+
   const themeIndex = malaCount > 0 ? (malaCount - 1) % THEMES.length : -1;
   const currentTheme = themeIndex >= 0 ? THEMES[themeIndex] : null;
 
-  // Line Logic
   const currentLineIndex = useMemo(() => {
-    if (currentIndex < 0) return 0; // Default to first line if reset
+    if (currentIndex < 0) return 0;
     let wordCount = 0;
     for (let i = 0; i < LINE_BREAKS.length; i++) {
       wordCount += LINE_BREAKS[i];
@@ -95,34 +187,26 @@ export const useNavkar = () => {
     return LINE_BREAKS.length - 1;
   }, [currentIndex]);
 
-  // --- Actions ---
+  // Actions
   const handleTap = useCallback(() => {
     if (isClearing) return;
 
-    // Vibration logic
-    if (!autoScroll && navigator.vibrate) {
-       navigator.vibrate(20);
+    // Biofeedback
+    recordTap();
+
+    if (navigator.vibrate) navigator.vibrate(20);
+    const nextIdx = currentIndex + 1;
+    if (nextIdx < MANTRA_WORDS.length) {
+      setCurrentIndex(nextIdx);
+      if (nextIdx === MANTRA_WORDS.length - 1) completeMantra();
     }
-
-    const nextIndex = currentIndex + 1;
-
-    if (nextIndex < MANTRA_WORDS.length) {
-      setCurrentIndex(nextIndex);
-
-      // Completion check
-      if (nextIndex === MANTRA_WORDS.length - 1) {
-        completeMantra();
-      }
-    }
-  }, [currentIndex, isClearing, autoScroll, totalNavkars]); // Added totalNavkars dependency indirectly via completeMantra call if I inlined it, but better separate.
+  }, [currentIndex, isClearing, totalNavkars, recordTap]);
 
   const completeMantra = () => {
-    if (!autoScroll && navigator.vibrate) navigator.vibrate(100);
-
+    if (navigator.vibrate) navigator.vibrate(100);
     const newTotal = totalNavkars + 1;
     persistTotal(newTotal);
-    persistHistory(newTotal);
-
+    persistHistory(newTotal, focus, calm);
     setIsClearing(true);
     setTimeout(() => {
       setCurrentIndex(-1);
@@ -130,55 +214,51 @@ export const useNavkar = () => {
     }, 1000);
   };
 
-  // --- Auto Scroll Effect ---
-  useEffect(() => {
-    let interval;
-    if (autoScroll && !isClearing) {
-      interval = setInterval(() => {
-        handleTap();
-      }, AUTO_SCROLL_SPEEDS[scrollSpeed]);
-    }
-    return () => clearInterval(interval);
-  }, [autoScroll, isClearing, scrollSpeed, handleTap]);
 
-  // --- Preference Setters ---
+
   const toggleMode = () => {
     const newMode = mode === 'GRID' ? 'RING' : 'GRID';
     setMode(newMode);
-    savePrefs(newMode, scrollSpeed);
+    savePrefs(newMode, malaSize);
   };
 
-  const toggleAutoScroll = () => setAutoScroll(!autoScroll);
-
-  const cycleSpeed = () => {
-    const speeds = ['SLOW', 'MEDIUM', 'FAST'];
-    const nextIdx = (speeds.indexOf(scrollSpeed) + 1) % speeds.length;
-    const newSpeed = speeds[nextIdx];
-    setScrollSpeed(newSpeed);
-    savePrefs(mode, newSpeed);
-  };
 
   return {
     totalNavkars,
     malaCount,
+    navkarsInMala,
     currentIndex,
     currentWord: currentIndex >= 0 ? MANTRA_WORDS[currentIndex] : null,
     isClearing,
     currentLineIndex,
     currentTheme,
-
     // Settings & History
     mode,
-    autoScroll,
-    scrollSpeed,
+    // autoScroll: false, // Legacy
+    // scrollSpeed: 'MEDIUM', // Legacy
+    malaSize,      // New Prop
+    setMalaSize: updateMalaSize, // Setter
     history,
     showDashboard,
     setShowDashboard,
-
+    // Optional Muse
+    useMuseEnabled,
+    toggleUseMuse,
+    isMuseConnected: isMuseActive, // Expose connection status
+    // Neuro Mode (UI Visibility)
+    neuroModeEnabled,
+    toggleNeuroMode,
+    // Metrics
+    focus,
+    calm,
+    brainState,
     // Actions
     handleTap,
     toggleMode,
-    toggleAutoScroll,
-    cycleSpeed
+    resetSession,
+    complexity,
+    setComplexityMode,
+    // toggleAutoScroll: () => {}, // Legacy stub if needed
+    // cycleSpeed: () => {}, // Legacy stub
   };
 };

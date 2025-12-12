@@ -29,6 +29,14 @@ const Dashboard = ({ history, totalNavkars, onClose }) => {
             <div className="text-3xl font-bold text-blue-700">{malasToday}</div>
             <div className="text-xs text-blue-600 uppercase tracking-wider mt-1">Malas Today</div>
           </div>
+          <div className="col-span-2 bg-purple-50 p-4 rounded-xl text-center border border-purple-100">
+            <div className="text-3xl font-bold text-purple-700">
+              {todayEntry.samples > 0
+                ? Math.round(todayEntry.stabilitySum / todayEntry.samples)
+                : '-'}
+            </div>
+            <div className="text-xs text-purple-600 uppercase tracking-wider mt-1">Mind Stability Score</div>
+          </div>
         </div>
 
         <div className="space-y-4">
