@@ -120,24 +120,25 @@ export const AdaptiveAudio = ({ enabled, brainState, soundscape = 'OM' }) => {
         // Indigo (Deep): "Mmmm" (Closed)
 
         switch (brainState) {
-            case 'gold':
-                targetVolume = 0.2;
-                targetF1 = 700; // 'A'ish
-                targetF2 = 1200;
+            case 'gold': // High Focus + High Calm (Flow)
+                targetVolume = 0.35; // Significantly louder/clearer
+                targetF1 = 700; // 'A' (Open)
+                targetF2 = 1250; // Higher resonance
+                // In a real synth, we might also add upper harmonics here
                 break;
-            case 'cyan':
-                targetVolume = 0.15;
-                targetF1 = 500; // 'O'ish
-                targetF2 = 900;
+            case 'cyan': // Active Focus
+                targetVolume = 0.25;
+                targetF1 = 550; // 'O'ish
+                targetF2 = 950;
                 break;
-            case 'indigo':
-                targetVolume = 0.15;
-                targetF1 = 300; // 'M'ish (humming)
-                targetF2 = 500;
+            case 'indigo': // Deep Calm
+                targetVolume = 0.25;
+                targetF1 = 300; // 'M'ish (Deep hum)
+                targetF2 = 450;
                 break;
-            case 'orange':
+            case 'orange': // Distracted
             default:
-                targetVolume = 0.05;
+                targetVolume = 0.08; // Quiet but audible guidance
                 targetF1 = 400; // Muffled
                 targetF2 = 700;
                 break;

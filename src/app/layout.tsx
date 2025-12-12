@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Literata } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -11,8 +11,6 @@ const literata = Literata({
   weight: ['400', '500', '600', '700'],
   display: 'swap',
 });
-
-import type { Metadata, Viewport } from "next";
 
 // ... (imports)
 
