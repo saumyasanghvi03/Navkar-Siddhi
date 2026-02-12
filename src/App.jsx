@@ -206,12 +206,12 @@ function App() {
       )}
 
       {/* Footer */}
-      <div className="fixed bottom-0 left-0 right-0 z-30 text-center py-1 pointer-events-auto">
+      <div className="fixed bottom-0 left-0 right-0 z-10 text-center py-1 pointer-events-none">
         <a
           href="https://linkedin.com/in/ssanghvi03"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[10px] text-gray-400 hover:text-teal-600 transition-colors"
+          className="text-[10px] text-gray-400 hover:text-teal-600 transition-colors pointer-events-auto"
         >
           Built by Saumya Sanghvi
         </a>
