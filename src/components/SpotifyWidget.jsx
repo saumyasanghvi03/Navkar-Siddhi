@@ -2,7 +2,7 @@ import React from 'react';
 
 const SpotifyWidget = ({ onOpenBhakti }) => {
     return (
-        <div className="fixed top-8 right-4 z-20">
+        <div className="fixed top-4 sm:top-8 right-2 sm:right-4 z-20">
             <button
                 onClick={onOpenBhakti}
                 className="flex items-center gap-2 bg-amber-600/90 hover:bg-amber-500 text-white px-3 py-1.5 rounded-full backdrop-blur-md transition-all text-xs font-medium border border-white/10 shadow-lg"

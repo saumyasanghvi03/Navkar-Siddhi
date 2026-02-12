@@ -15,7 +15,7 @@ const LiveMetrics = ({ focus, calm, brainState }) => {
     const gradient = getColor();
 
     return (
-        <div className="fixed top-24 right-4 z-30 flex flex-col gap-3 pointer-events-none animate-in slide-in-from-right-10 fade-in duration-1000">
+        <div className="fixed top-20 sm:top-24 right-2 sm:right-4 z-30 flex flex-col gap-3 pointer-events-none animate-in slide-in-from-right-10 fade-in duration-1000">
 
             {/* Focus Pill */}
             <div className="bg-white/60 backdrop-blur-md border border-gray-200 p-3 rounded-2xl shadow-sm flex items-center gap-3 w-32">
