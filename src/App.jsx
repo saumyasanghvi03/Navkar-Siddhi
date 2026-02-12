@@ -80,18 +80,18 @@ function App() {
 
       {/* Header Stats – solid teal background (Hidden in Lock Mode) */}
       {!isLocked && (
-        <div className="fixed top-8 left-4 z-20 flex flex-col items-start gap-2">
+        <div className="fixed top-4 sm:top-8 left-2 sm:left-4 z-20 flex flex-col items-start gap-2">
           {/* ... Header Content ... */}
-          <div className="flex items-center gap-4 px-4 py-2 bg-teal-600 rounded-full shadow-lg text-white font-serif">
+          <div className="flex items-center gap-2 sm:gap-4 px-3 sm:px-4 py-1.5 sm:py-2 bg-teal-600 rounded-full shadow-lg text-white font-serif">
             <div className="flex flex-col items-center">
-              <span className="text-[10px] uppercase tracking-widest opacity-60">Navkar</span>
-              <span className="text-xl font-bold font-headline">{totalNavkars}</span>
+              <span className="text-[9px] sm:text-[10px] uppercase tracking-widest opacity-60">Navkar</span>
+              <span className="text-lg sm:text-xl font-bold font-headline">{totalNavkars}</span>
             </div>
-            <div className="w-px h-8 bg-white/20 mx-2" />
+            <div className="w-px h-6 sm:h-8 bg-white/20 mx-1 sm:mx-2" />
             <div className="flex flex-col items-center">
-              <span className="text-[10px] uppercase tracking-widest opacity-60">Mala</span>
+              <span className="text-[9px] sm:text-[10px] uppercase tracking-widest opacity-60">Mala</span>
               <div className="flex items-baseline gap-1">
-                <span className="text-xl font-bold font-headline">{malaCount}</span>
+                <span className="text-lg sm:text-xl font-bold font-headline">{malaCount}</span>
                 <span className="text-xs opacity-50">.{navkarsInMala}</span>
               </div>
             </div>
@@ -204,6 +204,18 @@ function App() {
       {showBhakti && (
         <BhaktiModal onClose={() => setShowBhakti(false)} />
       )}
+
+      {/* Footer */}
+      <div className="fixed bottom-0 left-0 right-0 z-10 text-center py-1 pointer-events-none">
+        <a
+          href="https://linkedin.com/in/ssanghvi03"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[10px] text-gray-400 hover:text-teal-600 transition-colors pointer-events-auto"
+        >
+          Built by Saumya Sanghvi
+        </a>
+      </div>
     </div>
   );
 }

@@ -1,4 +1,3 @@
-```typescript
 import { useState, useEffect, useCallback } from 'react';
 
 export const useSimulation = (isActive: boolean) => {
@@ -40,7 +39,9 @@ export const useSimulation = (isActive: boolean) => {
                     coherence: newCoherence,
                     toxicity: newToxicity,
                     drift: prev.drift + (Math.random() * 0.1),
-                    stormCell: newPressure < 990 // Low pressure triggers "storm"
+                    stormCell: newPressure < 990, // Low pressure triggers "storm"
+                    focus: prev.focus,
+                    calm: prev.calm
                 };
             });
         }, 1000);

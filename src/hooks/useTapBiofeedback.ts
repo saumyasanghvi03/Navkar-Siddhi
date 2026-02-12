@@ -28,6 +28,7 @@ interface TapBiofeedbackConfig {
  */
 export interface TapBiofeedbackResult {
     /** Current biofeedback score (0‑100) */
+    score: number;
     /** Current calm score (0‑100) based on rhythm stability */
     calm: number;
     /** Whether the current score exceeds a focus threshold */
