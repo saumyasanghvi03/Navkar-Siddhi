@@ -167,6 +167,15 @@ export const useNavkar = () => {
     localStorage.setItem(TOTAL_KEY, '0');
   };
 
+  const resetMala = () => {
+    // Reset only the current mala progress, keeping completed malas
+    const completedNavkars = Math.floor(totalNavkars / malaSize) * malaSize;
+    setTotalNavkars(completedNavkars);
+    setCurrentIndex(-1);
+    setIsClearing(false);
+    localStorage.setItem(TOTAL_KEY, completedNavkars.toString());
+  };
+
   // Computed values
   const malaCount = Math.floor(totalNavkars / malaSize);
   const navkarsInMala = totalNavkars % malaSize;
@@ -256,6 +265,7 @@ export const useNavkar = () => {
     handleTap,
     toggleMode,
     resetSession,
+    resetMala,
     complexity,
     setComplexityMode,
     // toggleAutoScroll: () => {}, // Legacy stub if needed
