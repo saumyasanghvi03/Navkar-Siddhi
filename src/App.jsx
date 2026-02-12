@@ -31,6 +31,7 @@ function App() {
     handleTap,
     toggleMode,
     resetSession,
+    resetMala,
     malaSize,
     setMalaSize,
     neuroModeEnabled,
@@ -98,8 +99,8 @@ function App() {
         </div>
       )}
 
-      {/* Spotify Widget (Hidden in Lock Mode) */}
-      {!isLocked && <SpotifyWidget />}
+      {/* Music Widget (Hidden in Lock Mode) */}
+      {!isLocked && <SpotifyWidget onOpenBhakti={() => setShowBhakti(true)} />}
 
       {/* Controls (Hidden in Lock Mode) */}
       {!isLocked && (
@@ -115,6 +116,7 @@ function App() {
           malaSize={malaSize}
           setMalaSize={setMalaSize}
           onReset={resetSession}
+          onResetMala={resetMala}
           complexity={complexity}
           setComplexityMode={setComplexityMode}
           isLocked={isLocked}
