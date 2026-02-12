@@ -10,7 +10,7 @@ const ProgressGrid = ({ totalNavkars, currentTheme }) => {
   const activeFill = currentTheme ? currentTheme.gridFill : defaultFill;
 
   return (
-    <div className="fixed bottom-0 left-0 w-full p-2 pb-6 bg-white/30 backdrop-blur-sm border-t border-white/20">
+    <div className="fixed bottom-0 left-0 w-full p-2 pb-[calc(5rem+env(safe-area-inset-bottom))] bg-white/30 backdrop-blur-sm border-t border-white/20 z-10">
       <div className="grid grid-cols-[repeat(12,minmax(0,1fr))] gap-[2px] max-w-md mx-auto">
         {boxes.map((i) => (
           <div
