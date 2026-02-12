@@ -69,7 +69,7 @@ function App() {
 
 
   return (
-    <div className="relative w-full h-[100dvh] overflow-hidden">
+    <div className="relative w-full h-[100dvh] overflow-hidden" style={{ overscrollBehavior: 'none' }}>
       {/* Dynamic Background: Line-based colors with Theme priority */}
       <div
         className="absolute inset-0 -z-10"
@@ -80,7 +80,7 @@ function App() {
 
       {/* Header Stats – solid teal background (Hidden in Lock Mode) */}
       {!isLocked && (
-        <div className="fixed top-4 sm:top-8 left-2 sm:left-4 z-20 flex flex-col items-start gap-2">
+        <div className="fixed top-[calc(1rem+env(safe-area-inset-top))] left-2 sm:left-4 z-20 flex flex-col items-start gap-2">
           {/* ... Header Content ... */}
           <div className="flex items-center gap-2 sm:gap-4 px-3 sm:px-4 py-1.5 sm:py-2 bg-teal-600 rounded-full shadow-lg text-white font-serif">
             <div className="flex flex-col items-center">
@@ -206,7 +206,7 @@ function App() {
       )}
 
       {/* Footer */}
-      <div className="fixed bottom-0 left-0 right-0 z-10 text-center py-1 pointer-events-none">
+      <div className="fixed bottom-0 left-0 right-0 z-50 text-center py-1 pointer-events-none hidden sm:block">
         <a
           href="https://linkedin.com/in/ssanghvi03"
           target="_blank"

@@ -34,7 +34,7 @@ const MalaRing = ({ totalNavkars, currentTheme, malaSize = 108 }) => {
     <div className="absolute inset-0 flex items-center justify-center pointer-events-auto z-10">
       <svg
         viewBox="0 0 320 320"
-        className="w-[85vmin] h-[85vmin] max-w-[500px] max-h-[500px] opacity-80"
+        className="w-[70vmin] h-[70vmin] max-w-[400px] max-h-[400px] opacity-80"
       >
         {beads.map((i) => {
           // Calculate position
