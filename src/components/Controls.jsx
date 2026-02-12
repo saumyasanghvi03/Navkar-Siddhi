@@ -29,7 +29,7 @@ const Controls = ({
               <button
                 key={size}
                 onClick={() => setMalaSize(size)}
-                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs ${malaSize === size ? 'bg-white text-indigo-800' : 'text-white'}`}
+                className={`w-10 h-10 rounded-full flex items-center justify-center text-xs ${malaSize === size ? 'bg-white text-indigo-800' : 'text-white'}`}
                 title={`${size} beads`}
               >
                 {size}
