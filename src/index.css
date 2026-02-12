@@ -3,7 +3,19 @@
 @tailwind utilities;
 
 @layer base {
+  /* Mobile-critical styles */
+  html,
+  body {
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
   body {
     @apply bg-parchment font-serif text-gray-900;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 }
