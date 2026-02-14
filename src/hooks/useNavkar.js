@@ -20,7 +20,7 @@ export const useNavkar = () => {
   // Settings
   const [mode, setMode] = useState('GRID'); // GRID | RING
   const [useMuseEnabled, setUseMuseEnabled] = useState(false);
-  const [malaSize, setMalaSize] = useState(108); // 9 | 27 | 108
+  const [malaSize, setMalaSize] = useState(108); // 9 | 27 | 36 | 108
   const [showDashboard, setShowDashboard] = useState(false);
 
   // Biofeedback (Tap vs Muse)

@@ -40,7 +40,7 @@ const siddhiSteps = [
   {
     step: 2,
     title: 'Set Your Daily Target',
-    desc: 'Common targets: 108 (1 mala), 1008 (approx. 9 malas), or higher. Choose what suits your practice. Keep your phone on silent.',
+    desc: 'Common targets: 36 (1 short mala), 108 (1 full mala), 1008 (approx. 9 malas), or higher. Choose what suits your practice. Keep your phone on silent.',
   },
   {
     step: 3,
@@ -50,7 +50,7 @@ const siddhiSteps = [
   {
     step: 4,
     title: 'Begin Jaap',
-    desc: 'Recite each Navkar with attention on each pad. Tap to count. After 108, one mala is complete. Continue until your daily target is met.',
+    desc: 'Recite each Navkar with attention on each pad. Tap to count. You can use 9, 27, 36, or 108 beads per mala. After completing your chosen mala size, one mala is complete. Continue until your daily target is met.',
   },
   {
     step: 5,
