@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useNavkar } from './hooks/useNavkar';
+import { useNav } from './lib/navContext';
 import MantraWord from './components/MantraWord';
 import ProgressGrid from './components/ProgressGrid';
 import MalaRing from './components/MalaRing';
@@ -12,7 +13,15 @@ import Aura from './components/Aura';
 import AdaptiveAudio from './components/AdaptiveAudio';
 import BhaktiModal from './components/BhaktiModal';
 import SpotifyWidget from './components/SpotifyWidget';
+import NavBar from './components/NavBar';
+import AboutPage from './components/AboutPage';
+import TapSetupPage from './components/TapSetupPage';
+import ProgressPage from './components/ProgressPage';
+import PrivacyPage from './components/PrivacyPage';
+import FocusMode from './components/FocusMode';
+import NavkarAudioPlayer from './components/NavkarAudioPlayer';
 import { LINE_COLORS } from './utils/constants';
+import { computeStreak } from './lib/tapStorage';
 
 function App() {
   const {
@@ -47,12 +56,17 @@ function App() {
     setComplexityMode,
   } = useNavkar();
 
+  const { page, setPage, showLangHindi, setShowLangHindi } = useNav();
+
+  // Focus Mode
+  const [focusModeActive, setFocusModeActive] = React.useState(false);
+
   // Lock Mode (No-Distraction)
   const [isLocked, setIsLocked] = React.useState(false);
   const toggleLock = () => setIsLocked(prev => !prev);
 
   // Soundscape
-  const SOUNDSCAPES = ['OM', 'SILENT']; // Removed TEMPLE as per request
+  const SOUNDSCAPES = ['OM', 'SILENT'];
   const [activeSoundscape, setActiveSoundscape] = React.useState('OM');
   const cycleSoundscape = () => {
     setActiveSoundscape(prev => {
@@ -64,26 +78,86 @@ function App() {
   // Bhakti Mode
   const [showBhakti, setShowBhakti] = React.useState(false);
 
-  // Use LINE_COLORS for line‑based background colors
-  const lineBackgroundColors = LINE_COLORS;
+  // Streak
+  const streak = React.useMemo(() => computeStreak(history), [history]);
 
+  // Today's stats
+  const todayStr = React.useMemo(() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }, []);
+  const todayEntry = history.find(h => h.date === todayStr) || { navkars: 0 };
+  const todayMalas = Math.floor(todayEntry.navkars / 108);
 
+  // If focus mode is active, render only FocusMode
+  if (focusModeActive) {
+    return (
+      <FocusMode
+        totalNavkars={totalNavkars}
+        onTap={handleTap}
+        currentIndex={currentIndex}
+        currentWord={currentWord}
+        currentWordHindi={currentWordHindi}
+        currentLineIndex={currentLineIndex}
+        isClearing={isClearing}
+        onExit={() => setFocusModeActive(false)}
+      />
+    );
+  }
 
+  // Non-jaap pages
+  if (page === 'about') {
+    return (
+      <>
+        <NavBar />
+        <AboutPage />
+      </>
+    );
+  }
+
+  if (page === 'tapsetup') {
+    return (
+      <>
+        <NavBar />
+        <TapSetupPage />
+      </>
+    );
+  }
+
+  if (page === 'progress') {
+    return (
+      <>
+        <NavBar />
+        <ProgressPage history={history} totalNavkars={totalNavkars} />
+      </>
+    );
+  }
+
+  if (page === 'privacy') {
+    return (
+      <>
+        <NavBar />
+        <PrivacyPage />
+      </>
+    );
+  }
+
+  // Main Jaap page
   return (
     <div className="relative w-full h-[100dvh] overflow-hidden" style={{ overscrollBehavior: 'none' }}>
-      {/* Dynamic Background: Line-based colors with Theme priority */}
+      {/* Background */}
       <div
         className="absolute inset-0 -z-10"
-        style={{
-          backgroundColor: '#FDFBF7', // Fixed cream light color
-        }}
+        style={{ backgroundColor: '#FFF8F0' }}
       />
 
-      {/* Header Stats – solid teal background (Hidden in Lock Mode) */}
+      {/* Navigation bar (Hidden in Lock Mode) */}
+      {!isLocked && <NavBar />}
+
+      {/* Header Stats (Hidden in Lock Mode) */}
       {!isLocked && (
-        <div className="fixed top-[calc(1rem+env(safe-area-inset-top))] left-2 sm:left-4 z-20 flex flex-col items-start gap-2">
-          {/* ... Header Content ... */}
-          <div className="flex items-center gap-2 sm:gap-4 px-3 sm:px-4 py-1.5 sm:py-2 bg-teal-600 rounded-full shadow-lg text-white font-serif">
+        <div className="fixed top-14 left-2 sm:left-4 z-20 flex flex-col items-start gap-2">
+          <div className="flex items-center gap-2 sm:gap-4 px-3 sm:px-4 py-1.5 sm:py-2 bg-orange-700 rounded-full shadow-lg text-white font-serif">
             <div className="flex flex-col items-center">
               <span className="text-[9px] sm:text-[10px] uppercase tracking-widest opacity-60">Navkar</span>
               <span className="text-lg sm:text-xl font-bold font-headline">{totalNavkars}</span>
@@ -96,7 +170,57 @@ function App() {
                 <span className="text-xs opacity-50">.{navkarsInMala}</span>
               </div>
             </div>
+            {streak > 0 && (
+              <>
+                <div className="w-px h-6 sm:h-8 bg-white/20 mx-1 sm:mx-2" />
+                <div className="flex flex-col items-center">
+                  <span className="text-[9px] sm:text-[10px] uppercase tracking-widest opacity-60">Streak</span>
+                  <span className="text-lg sm:text-xl font-bold font-headline">{streak}</span>
+                </div>
+              </>
+            )}
           </div>
+
+          {/* Today mini stats */}
+          <div className="flex items-center gap-2 px-3 py-1 bg-white/70 backdrop-blur-sm rounded-full text-xs text-gray-600 shadow-sm border border-orange-100">
+            <span>Today: <strong className="text-orange-700">{todayEntry.navkars}</strong> Navkars</span>
+            <span className="text-gray-300">|</span>
+            <span><strong className="text-blue-700">{todayMalas}</strong> Malas</span>
+          </div>
+        </div>
+      )}
+
+      {/* Top-right controls: Audio + Language + Focus */}
+      {!isLocked && (
+        <div className="fixed top-14 right-2 sm:right-4 z-20 flex items-center gap-1.5">
+          {/* Language Toggle */}
+          <button
+            onClick={() => setShowLangHindi(!showLangHindi)}
+            className={`
+              w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold transition-all
+              border shadow-sm
+              ${showLangHindi
+                ? 'bg-orange-100 text-orange-800 border-orange-200'
+                : 'bg-white/70 text-gray-500 border-orange-200 hover:bg-orange-50'}
+            `}
+            title={showLangHindi ? 'Hide Devanagari' : 'Show Devanagari'}
+          >
+            {showLangHindi ? 'अ' : 'En'}
+          </button>
+
+          {/* Focus Mode */}
+          <button
+            onClick={() => setFocusModeActive(true)}
+            className="w-10 h-10 rounded-full flex items-center justify-center bg-white/70 text-gray-600 border border-orange-200 shadow-sm hover:bg-orange-50 transition-all"
+            title="Focus Mode"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+            </svg>
+          </button>
+
+          {/* Navkar Audio Player */}
+          <NavkarAudioPlayer />
         </div>
       )}
 
@@ -158,7 +282,11 @@ function App() {
               {complexity !== 'BASIC' && (
                 <Aura enabled={neuroModeEnabled} state={brainState} size={1.2} />
               )}
-              <MantraWord word={currentWord} wordHindi={currentWordHindi} lineIndex={currentLineIndex} />
+              <MantraWord
+                word={currentWord}
+                wordHindi={showLangHindi ? currentWordHindi : null}
+                lineIndex={currentLineIndex}
+              />
             </>
           )}
         </div>
@@ -182,7 +310,7 @@ function App() {
         <div className="fixed bottom-8 left-4 z-50">
           <button
             onClick={toggleLock}
-            className="w-10 h-10 rounded-full flex items-center justify-center bg-white/20 text-teal-800/60 backdrop-blur-sm border border-white/30 hover:bg-white/40 transition-all"
+            className="w-10 h-10 rounded-full flex items-center justify-center bg-white/20 text-orange-800/60 backdrop-blur-sm border border-white/30 hover:bg-white/40 transition-all"
             title="Unlock Controls"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -206,16 +334,25 @@ function App() {
         <BhaktiModal onClose={() => setShowBhakti(false)} />
       )}
 
-      {/* Footer */}
+      {/* Privacy link */}
       <div className="fixed bottom-0 left-0 right-0 z-50 text-center py-1 pointer-events-none hidden sm:block">
-        <a
-          href="https://linkedin.com/in/ssanghvi03"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[10px] text-gray-400 hover:text-teal-600 transition-colors pointer-events-auto"
-        >
-          Built by Saumya Sanghvi
-        </a>
+        <span className="text-[10px] text-gray-400 pointer-events-auto">
+          <a
+            href="https://linkedin.com/in/ssanghvi03"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-orange-600 transition-colors"
+          >
+            Built by Saumya Sanghvi
+          </a>
+          <span className="mx-2">|</span>
+          <button
+            onClick={() => setPage('privacy')}
+            className="hover:text-orange-600 transition-colors"
+          >
+            Your Data
+          </button>
+        </span>
       </div>
     </div>
   );
