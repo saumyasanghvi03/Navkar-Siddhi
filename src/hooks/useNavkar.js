@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { museManager } from '../lib/muse-client';
 import { useTapBiofeedback } from './useTapBiofeedback';
 import { useOrganicMetric } from './useOrganicMetric';
-import { MANTRA_WORDS, LINE_BREAKS, THEMES, AUTO_SCROLL_SPEEDS } from '../utils/constants';
+import { MANTRA_WORDS, MANTRA_WORDS_HINDI, LINE_BREAKS, THEMES, AUTO_SCROLL_SPEEDS } from '../utils/constants';
 import { computeUpdatedHistory, loadInitialState } from '../lib/navkarPersistence';
 
 const HISTORY_KEY = 'navkar_history';
@@ -218,6 +218,7 @@ export const useNavkar = () => {
     navkarsInMala,
     currentIndex,
     currentWord: currentIndex >= 0 ? MANTRA_WORDS[currentIndex] : null,
+    currentWordHindi: currentIndex >= 0 ? MANTRA_WORDS_HINDI[currentIndex] : null,
     isClearing,
     currentLineIndex,
     currentTheme,
