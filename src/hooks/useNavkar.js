@@ -4,7 +4,8 @@ import { museManager } from '../lib/muse-client';
 import { useTapBiofeedback } from './useTapBiofeedback';
 import { useOrganicMetric } from './useOrganicMetric';
 import { MANTRA_WORDS, MANTRA_WORDS_HINDI, LINE_BREAKS, THEMES, AUTO_SCROLL_SPEEDS } from '../utils/constants';
-import { computeUpdatedHistory, loadInitialState } from '../lib/navkarPersistence';
+import { computeUpdatedHistory, loadInitialState, getTodayDate } from '../lib/navkarPersistence';
+import { addToTapLog, getActiveTap } from '../lib/tapStorage';
 
 const HISTORY_KEY = 'navkar_history';
 const TOTAL_KEY = 'totalCount'; // legacy key
@@ -196,6 +197,18 @@ export const useNavkar = () => {
     const newTotal = totalNavkars + 1;
     persistTotal(newTotal);
     persistHistory(newTotal, focus, calm);
+
+    // Update tap log if an active tap exists
+    try {
+      const activeTap = getActiveTap();
+      if (activeTap) {
+        const today = getTodayDate();
+        const todayHist = history.find(h => h.date === today);
+        const todayCount = todayHist ? todayHist.navkars + 1 : 1;
+        addToTapLog(todayCount);
+      }
+    } catch (_) { /* ignore tap log errors */ }
+
     setIsClearing(true);
     setTimeout(() => {
       setCurrentIndex(-1);

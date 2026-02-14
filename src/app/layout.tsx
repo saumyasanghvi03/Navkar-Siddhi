@@ -15,7 +15,7 @@ const literata = Literata({
 // ... (imports)
 
 export const viewport: Viewport = {
-  themeColor: "#0F766E",
+  themeColor: "#C2410C",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -24,13 +24,13 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Navkar Siddhi Tap",
-  description: "Count your Navkar mantras with mala tapping",
+  title: "Navkar Siddhi — Jain Mantra Meditation & Tap Tracking",
+  description: "A spiritually aligned Navkar mantra meditation and tap-tracking app for Jain sadhana. Count malas, track streaks, and deepen your jaap practice.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Navkar Tap",
+    title: "Navkar Siddhi",
   },
 };
 
