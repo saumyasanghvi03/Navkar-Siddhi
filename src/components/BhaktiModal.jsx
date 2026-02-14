@@ -4,7 +4,8 @@ const TRACKS = [
     { id: 'bhaktamar', title: 'Bhaktamar Stotra', duration: '45:00', youtubeId: 's3lUO_2EyRE' }, // T-Series Anuradha Paudwal
     { id: 'uvasaggaharam', title: 'Uvasaggaharam Stotra', duration: '9:00', youtubeId: 'zGXbXPYllD4' }, // 27 Times Recitation
     { id: 'chintamani', title: 'Chintamani Mari Chinta Chur', duration: '6:30', youtubeId: '4dzFnICSvNM' }, // Requested Song
-    { id: 'ratnakar', title: 'Ratnakar Pachchishi', duration: '12:00', youtubeId: 'rq1A1SCuO8o' }
+    { id: 'ratnakar', title: 'Ratnakar Pachchishi', duration: '12:00', youtubeId: 'rq1A1SCuO8o' },
+    { id: 'navkar-dhun', title: 'Navkar Mantra Dhun - Siddhagiri Na Shikharo Bole', duration: '48:18', youtubeId: '2zZUvNPDKDw' } // Jain Stavan by Amey Date
 ];
 
 const BhaktiModal = ({ onClose }) => {
