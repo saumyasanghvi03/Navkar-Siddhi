@@ -304,7 +304,7 @@ function App() {
 
       {/* Grid Mode Footer */}
       {mode === 'GRID' && (
-        <ProgressGrid totalNavkars={totalNavkars} currentTheme={currentTheme} />
+        <ProgressGrid totalNavkars={totalNavkars} currentTheme={currentTheme} malaSize={malaSize} />
       )}
 
       {/* Live Metrics – visible when neuro mode enabled */}
