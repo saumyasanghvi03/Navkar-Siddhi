@@ -21,6 +21,7 @@ function App() {
     navkarsInMala,
     currentIndex,
     currentWord,
+    currentWordHindi,
     isClearing,
     currentLineIndex,
     currentTheme,
@@ -157,7 +158,7 @@ function App() {
               {complexity !== 'BASIC' && (
                 <Aura enabled={neuroModeEnabled} state={brainState} size={1.2} />
               )}
-              <MantraWord word={currentWord} lineIndex={currentLineIndex} />
+              <MantraWord word={currentWord} wordHindi={currentWordHindi} lineIndex={currentLineIndex} />
             </>
           )}
         </div>

@@ -10,6 +10,19 @@ export const MANTRA_WORDS = [
   "Padhamam", "Havai", "Mangalam"
 ];
 
+// Hindi translations for each mantra word
+export const MANTRA_WORDS_HINDI = [
+  "नमो", "अरिहंताणं",
+  "नमो", "सिद्धाणं",
+  "नमो", "आयरियाणं",
+  "नमो", "उवज्झायाणं",
+  "नमो", "लोए", "सव्व", "साहूणं",
+  "एसो", "पंच", "णमुक्कारो",
+  "सव्व", "पावप्पणासणो",
+  "मंगलाणं", "च", "सव्वेसिं",
+  "पढमं", "हवइ", "मंगलं"
+];
+
 // 9 Lines colors
 export const LINE_COLORS = [
   "#b91c1c",  // Line 1: Deep Red
