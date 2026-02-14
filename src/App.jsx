@@ -18,6 +18,7 @@ import AboutPage from './components/AboutPage';
 import TapSetupPage from './components/TapSetupPage';
 import ProgressPage from './components/ProgressPage';
 import PrivacyPage from './components/PrivacyPage';
+import ContactPage from './components/ContactPage';
 import FocusMode from './components/FocusMode';
 import NavkarAudioPlayer from './components/NavkarAudioPlayer';
 import { LINE_COLORS } from './utils/constants';
@@ -138,6 +139,15 @@ function App() {
       <>
         <NavBar />
         <PrivacyPage />
+      </>
+    );
+  }
+
+  if (page === 'contact') {
+    return (
+      <>
+        <NavBar />
+        <ContactPage />
       </>
     );
   }
@@ -294,7 +304,7 @@ function App() {
 
       {/* Grid Mode Footer */}
       {mode === 'GRID' && (
-        <ProgressGrid totalNavkars={totalNavkars} currentTheme={currentTheme} />
+        <ProgressGrid totalNavkars={totalNavkars} currentTheme={currentTheme} malaSize={malaSize} />
       )}
 
       {/* Live Metrics – visible when neuro mode enabled */}

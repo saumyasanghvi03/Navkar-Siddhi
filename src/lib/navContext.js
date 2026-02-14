@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState } from 'react';
 
 /**
  * Simple client-side navigation context.
- * Pages: 'jaap' | 'about' | 'tapsetup' | 'progress' | 'privacy'
+ * Pages: 'jaap' | 'about' | 'tapsetup' | 'progress' | 'privacy' | 'contact'
  */
 const NavContext = createContext({
   page: 'jaap',

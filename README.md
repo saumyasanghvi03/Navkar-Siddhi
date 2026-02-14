@@ -16,7 +16,7 @@ A meditative tapping app to help improve focus by writing a mantra word-by-word.
 ## Features
 
 - **Sequential Mantra Display**: Reveals one word at a time.
-- **Mala Tracker**: Visual representation of mala progress with 9, 27, or 108 beads.
+- **Mala Tracker**: Visual representation of mala progress with 9, 27, 36, or 108 beads.
 - **Dynamic Themes**: Changes color themes upon mala completion.
 - **Haptic Feedback**: Vibration feedback for taps and completions.
 - **Data Persistence**: Saves progress in localStorage.

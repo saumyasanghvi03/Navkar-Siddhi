@@ -25,7 +25,7 @@ const Controls = ({
         <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 max-w-4xl mx-auto">
           {/* Mala Size */}
           <div className="flex bg-orange-700 rounded-full p-1 gap-1">
-            {[9, 27, 108].map(size => (
+            {[9, 27, 36, 108].map(size => (
               <button
                 key={size}
                 onClick={() => setMalaSize(size)}
