@@ -23,6 +23,7 @@ import FocusMode from './components/FocusMode';
 import NavkarAudioPlayer from './components/NavkarAudioPlayer';
 import { LINE_COLORS } from './utils/constants';
 import { computeStreak } from './lib/tapStorage';
+import { LANGUAGES } from './lib/navContext';
 
 function App() {
   const {
@@ -32,6 +33,7 @@ function App() {
     currentIndex,
     currentWord,
     currentWordHindi,
+    currentWordGujarati,
     isClearing,
     currentLineIndex,
     currentTheme,
@@ -57,7 +59,27 @@ function App() {
     setComplexityMode,
   } = useNavkar();
 
-  const { page, setPage, showLangHindi, setShowLangHindi } = useNav();
+  const { page, setPage, language, setLanguage } = useNav();
+
+  // Cycle through languages: english -> hindi -> gujarati -> english
+  const cycleLanguage = () => {
+    const idx = LANGUAGES.indexOf(language);
+    setLanguage(LANGUAGES[(idx + 1) % LANGUAGES.length]);
+  };
+
+  // Get the display word based on selected language
+  const displayWord = language === 'hindi' ? currentWordHindi
+    : language === 'gujarati' ? currentWordGujarati
+    : currentWord;
+
+  // Language button label
+  const langLabel = language === 'hindi' ? 'हि'
+    : language === 'gujarati' ? 'ગુ'
+    : 'En';
+
+  const langTitle = language === 'hindi' ? 'Hindi — tap to switch to Gujarati'
+    : language === 'gujarati' ? 'Gujarati — tap to switch to English'
+    : 'English — tap to switch to Hindi';
 
   // Focus Mode
   const [focusModeActive, setFocusModeActive] = React.useState(false);
@@ -99,6 +121,7 @@ function App() {
         currentIndex={currentIndex}
         currentWord={currentWord}
         currentWordHindi={currentWordHindi}
+        currentWordGujarati={currentWordGujarati}
         currentLineIndex={currentLineIndex}
         isClearing={isClearing}
         onExit={() => setFocusModeActive(false)}
@@ -205,17 +228,17 @@ function App() {
         <div className="fixed top-14 right-2 sm:right-4 z-20 flex items-center gap-1.5">
           {/* Language Toggle */}
           <button
-            onClick={() => setShowLangHindi(!showLangHindi)}
+            onClick={cycleLanguage}
             className={`
               w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold transition-all
               border shadow-sm
-              ${showLangHindi
+              ${language !== 'english'
                 ? 'bg-orange-100 text-orange-800 border-orange-200'
                 : 'bg-white/70 text-gray-500 border-orange-200 hover:bg-orange-50'}
             `}
-            title={showLangHindi ? 'Hide Devanagari' : 'Show Devanagari'}
+            title={langTitle}
           >
-            {showLangHindi ? 'अ' : 'En'}
+            {langLabel}
           </button>
 
           {/* Focus Mode */}
@@ -293,8 +316,7 @@ function App() {
                 <Aura enabled={neuroModeEnabled} state={brainState} size={1.2} />
               )}
               <MantraWord
-                word={currentWord}
-                wordHindi={showLangHindi ? currentWordHindi : null}
+                word={displayWord}
                 lineIndex={currentLineIndex}
               />
             </>

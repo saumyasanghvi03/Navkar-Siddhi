@@ -23,6 +23,19 @@ export const MANTRA_WORDS_HINDI = [
   "पढमं", "हवइ", "मंगलं"
 ];
 
+// Gujarati translations for each mantra word
+export const MANTRA_WORDS_GUJARATI = [
+  "નમો", "અરિહંતાણં",
+  "નમો", "સિદ્ધાણં",
+  "નમો", "આયરિયાણં",
+  "નમો", "ઉવજ્ઝાયાણં",
+  "નમો", "લોએ", "સવ્વ", "સાહૂણં",
+  "એસો", "પંચ", "ણમુક્કારો",
+  "સવ્વ", "પાવપ્પણાસણો",
+  "મંગલાણં", "ચ", "સવ્વેસિં",
+  "પઢમં", "હવઈ", "મંગલં"
+];
+
 // 9 Lines colors
 export const LINE_COLORS = [
   "#b91c1c",  // Line 1: Deep Red

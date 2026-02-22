@@ -7,26 +7,31 @@ const pads = [
   {
     sanskrit: 'Namo Arihantanam',
     devanagari: 'णमो अरिहंताणं',
+    gujarati: 'નમો અરિહંતાણં',
     meaning: 'I bow to the Arihants — enlightened souls who have conquered all inner passions.',
   },
   {
     sanskrit: 'Namo Siddhanam',
     devanagari: 'णमो सिद्धाणं',
+    gujarati: 'નમો સિદ્ધાણં',
     meaning: 'I bow to the Siddhas — liberated souls who have attained infinite knowledge and bliss.',
   },
   {
     sanskrit: 'Namo Ayariyanam',
     devanagari: 'णमो आयरियाणं',
+    gujarati: 'નમો આયરિયાણં',
     meaning: 'I bow to the Acharyas — great teachers who lead the Jain community on the path of dharma.',
   },
   {
     sanskrit: 'Namo Uvajjhayanam',
     devanagari: 'णमो उवज्झायाणं',
+    gujarati: 'નમો ઉવજ્ઝાયાણં',
     meaning: 'I bow to the Upadhyayas — scholar monks who teach the sacred scriptures.',
   },
   {
     sanskrit: 'Namo Loye Savva Sahunam',
     devanagari: 'णमो लोए सव्व साहूणं',
+    gujarati: 'નમો લોએ સવ્વ સાહૂણં',
     meaning: 'I bow to all Sadhus and Sadhvis — monks and nuns devoted to self-discipline and compassion.',
   },
 ];
@@ -75,15 +80,28 @@ const AboutPage = () => {
           seeking their virtues within ourselves.
         </p>
 
+        {/* Language Support */}
+        <section className="mb-8 bg-white rounded-xl p-4 border border-orange-100 shadow-sm">
+          <h3 className="text-base font-serif font-semibold text-orange-800 mb-2">Language Support</h3>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            This app supports the Navkar Mantra in three languages — <strong>English (Prakrit transliteration)</strong>,{' '}
+            <strong>Hindi (Devanagari)</strong>, and <strong>Gujarati</strong>. Use the language toggle button
+            in the top-right corner during jaap to switch between them.
+          </p>
+        </section>
+
         {/* Five Pads */}
         <section className="mb-8">
           <h2 className="text-lg font-serif font-semibold text-orange-800 mb-4">The Five Pads</h2>
           <div className="space-y-3">
             {pads.map((p, i) => (
               <div key={i} className="bg-white rounded-xl p-4 border border-orange-100 shadow-sm">
-                <div className="flex items-baseline gap-2 mb-1">
+                <div className="flex flex-col gap-1 mb-1">
                   <span className="text-orange-700 font-serif font-semibold text-sm">{p.sanskrit}</span>
-                  <span className="text-orange-500 text-xs">({p.devanagari})</span>
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-orange-500 text-xs">{p.devanagari}</span>
+                    <span className="text-orange-500 text-xs">{p.gujarati}</span>
+                  </div>
                 </div>
                 <p className="text-gray-600 text-sm leading-relaxed">{p.meaning}</p>
               </div>
