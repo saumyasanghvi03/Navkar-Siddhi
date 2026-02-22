@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useEffect } from 'react';
-import { MANTRA_WORDS, MANTRA_WORDS_HINDI, LINE_COLORS } from '../utils/constants';
+import { LINE_COLORS } from '../utils/constants';
 import { useNav } from '../lib/navContext';
 
 /**
@@ -10,15 +10,15 @@ import { useNav } from '../lib/navContext';
  */
 
 const MANTRA_LINE_TEXT = [
-  { en: 'Namo Arihantanam', hi: 'णमो अरिहंताणं' },
-  { en: 'Namo Siddhanam', hi: 'णमो सिद्धाणं' },
-  { en: 'Namo Ayariyanam', hi: 'णमो आयरियाणं' },
-  { en: 'Namo Uvajjhayanam', hi: 'णमो उवज्झायाणं' },
-  { en: 'Namo Loye Savva Sahunam', hi: 'णमो लोए सव्व साहूणं' },
-  { en: 'Eso Pancha Namukkaro', hi: 'एसो पंच णमुक्कारो' },
-  { en: 'Savva Pavappanasano', hi: 'सव्व पावप्पणासणो' },
-  { en: 'Mangalanam Cha Savvesim', hi: 'मंगलाणं च सव्वेसिं' },
-  { en: 'Padhamam Havai Mangalam', hi: 'पढमं हवइ मंगलं' },
+  { en: 'Namo Arihantanam', hi: 'णमो अरिहंताणं', gu: 'નમો અરિહંતાણં' },
+  { en: 'Namo Siddhanam', hi: 'णमो सिद्धाणं', gu: 'નમો સિદ્ધાણં' },
+  { en: 'Namo Ayariyanam', hi: 'णमो आयरियाणं', gu: 'નમો આયરિયાણં' },
+  { en: 'Namo Uvajjhayanam', hi: 'णमो उवज्झायाणं', gu: 'નમો ઉવજ્ઝાયાણં' },
+  { en: 'Namo Loye Savva Sahunam', hi: 'णमो लोए सव्व साहूणं', gu: 'નમો લોએ સવ્વ સાહૂણં' },
+  { en: 'Eso Pancha Namukkaro', hi: 'एसो पंच णमुक्कारो', gu: 'એસો પંચ ણમુક્કારો' },
+  { en: 'Savva Pavappanasano', hi: 'सव्व पावप्पणासणो', gu: 'સવ્વ પાવપ્પણાસણો' },
+  { en: 'Mangalanam Cha Savvesim', hi: 'मंगलाणं च सव्वेसिं', gu: 'મંગલાણં ચ સવ્વેસિં' },
+  { en: 'Padhamam Havai Mangalam', hi: 'पढमं हवइ मंगलं', gu: 'પઢમં હવઈ મંગલં' },
 ];
 
 const REFLECTIONS = [
@@ -29,8 +29,13 @@ const REFLECTIONS = [
   'With each Navkar, I release attachment and aversion.',
 ];
 
-const FocusMode = ({ totalNavkars, onTap, currentIndex, currentWord, currentWordHindi, currentLineIndex, isClearing, onExit }) => {
-  const { showLangHindi } = useNav();
+const FocusMode = ({ totalNavkars, onTap, currentIndex, currentWord, currentWordHindi, currentWordGujarati, currentLineIndex, isClearing, onExit }) => {
+  const { language } = useNav();
+
+  // Get the display word based on selected language
+  const displayWord = language === 'hindi' ? currentWordHindi
+    : language === 'gujarati' ? currentWordGujarati
+    : currentWord;
   const [showReflection, setShowReflection] = useState(false);
   const [reflectionText, setReflectionText] = useState('');
 
@@ -90,22 +95,12 @@ const FocusMode = ({ totalNavkars, onTap, currentIndex, currentWord, currentWord
           </span>
         )}
         {currentIndex >= 0 && !isClearing && (
-          <>
-            <div
-              className="text-4xl sm:text-6xl md:text-7xl font-bold select-none text-center transition-all duration-300"
-              style={{ color: LINE_COLORS[currentLineIndex] || '#fff' }}
-            >
-              {currentWord}
-            </div>
-            {showLangHindi && currentWordHindi && (
-              <div
-                className="text-3xl sm:text-5xl font-bold select-none text-center transition-all duration-300"
-                style={{ color: LINE_COLORS[currentLineIndex] || '#fff', opacity: 0.7 }}
-              >
-                {currentWordHindi}
-              </div>
-            )}
-          </>
+          <div
+            className="text-4xl sm:text-6xl md:text-7xl font-bold select-none text-center transition-all duration-300"
+            style={{ color: LINE_COLORS[currentLineIndex] || '#fff' }}
+          >
+            {displayWord}
+          </div>
         )}
       </div>
 
@@ -119,7 +114,7 @@ const FocusMode = ({ totalNavkars, onTap, currentIndex, currentWord, currentWord
                 i === currentLineIndex ? 'opacity-100 text-white/80' : 'text-white/30'
               }`}
             >
-              {showLangHindi ? line.hi : line.en}
+              {language === 'hindi' ? line.hi : language === 'gujarati' ? line.gu : line.en}
             </p>
           ))}
         </div>
