@@ -81,7 +81,6 @@ const AboutPage = () => {
         </p>
 
         {/* Language Support */}
-        <section className="mb-8 bg-white rounded-xl p-4 border border-orange-100 shadow-sm">
           <h3 className="text-base font-serif font-semibold text-orange-800 mb-2">Language Support</h3>
           <p className="text-sm text-gray-600 leading-relaxed">
             This app supports the Navkar Mantra in three languages — <strong>English (Prakrit transliteration)</strong>,{' '}

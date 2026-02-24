@@ -111,6 +111,14 @@ const BlogPage = () => {
               Back to Jaap
             </button>
           </div>
+          <div>
+            <button
+              onClick={() => setPage('privacy')}
+              className="text-gray-400 text-xs hover:text-orange-600 hover:underline transition-colors"
+            >
+              Privacy Policy
+            </button>
+          </div>
         </div>
 
       </div>
