@@ -62,7 +62,7 @@ export const useNavkar = () => {
   const focus = useOrganicMetric(rawFocus, 1.0);
   const calm = useOrganicMetric(rawCalm, 0.8);
 
-  const [neuroModeEnabled, setNeuroModeEnabled] = useState(true);
+  const [neuroModeEnabled, setNeuroModeEnabled] = useState(false);
   const toggleNeuroMode = () => setNeuroModeEnabled(prev => !prev);
   const toggleUseMuse = () => setUseMuseEnabled(prev => !prev);
 

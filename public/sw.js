@@ -1,10 +1,12 @@
-const CACHE_NAME = 'navkar-tap-v1';
+const CACHE_NAME = 'navkar-tap-v3';
 const URLS_TO_CACHE = [
     '/',
     '/manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
+    // Take control immediately on every new deployment — no waiting for tabs to close
+    self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
@@ -41,6 +43,12 @@ self.addEventListener('fetch', (event) => {
                 );
             })
     );
+});
+
+self.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
 });
 
 self.addEventListener('activate', (event) => {

@@ -8,6 +8,7 @@ const tabs = [
   { id: 'about', label: 'About', icon: '📖' },
   { id: 'tapsetup', label: 'Tap', icon: '🎯' },
   { id: 'progress', label: 'Progress', icon: '📊' },
+  { id: 'blog', label: 'Blog', icon: '✍️' },
   { id: 'contact', label: 'Contact', icon: '📞' },
 ];
 
@@ -26,7 +27,7 @@ const NavBar = () => {
               key={t.id}
               onClick={() => setPage(t.id)}
               className={`
-                px-3 py-1.5 rounded-full text-xs font-medium transition-all
+                px-2 py-1.5 rounded-full text-xs font-medium transition-all
                 ${page === t.id
                   ? 'bg-orange-100 text-orange-800'
                   : 'text-gray-500 hover:text-orange-700 hover:bg-orange-50'}
