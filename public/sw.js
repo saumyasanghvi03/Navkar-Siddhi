@@ -1,4 +1,4 @@
-const CACHE_NAME = 'navkar-tap-v1';
+const CACHE_NAME = 'navkar-tap-v2';
 const URLS_TO_CACHE = [
     '/',
     '/manifest.json'
@@ -41,6 +41,12 @@ self.addEventListener('fetch', (event) => {
                 );
             })
     );
+});
+
+self.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
 });
 
 self.addEventListener('activate', (event) => {
