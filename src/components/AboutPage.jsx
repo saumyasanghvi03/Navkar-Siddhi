@@ -147,13 +147,21 @@ const AboutPage = () => {
         </section>
 
         {/* CTA */}
-        <div className="text-center">
+        <div className="text-center space-y-3">
           <button
             onClick={() => setPage('jaap')}
             className="bg-orange-600 text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-orange-700 transition-colors shadow-md"
           >
             Begin Jaap
           </button>
+          <div>
+            <button
+              onClick={() => setPage('privacy')}
+              className="text-gray-400 text-xs hover:text-orange-600 hover:underline transition-colors"
+            >
+              Privacy Policy
+            </button>
+          </div>
         </div>
       </div>
     </div>

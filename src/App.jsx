@@ -15,6 +15,7 @@ import BhaktiModal from './components/BhaktiModal';
 import SpotifyWidget from './components/SpotifyWidget';
 import NavBar from './components/NavBar';
 import AboutPage from './components/AboutPage';
+import BlogPage from './components/BlogPage';
 import TapSetupPage from './components/TapSetupPage';
 import ProgressPage from './components/ProgressPage';
 import PrivacyPage from './components/PrivacyPage';
@@ -162,6 +163,15 @@ function App() {
       <>
         <NavBar />
         <PrivacyPage />
+      </>
+    );
+  }
+
+  if (page === 'blog') {
+    return (
+      <>
+        <NavBar />
+        <BlogPage />
       </>
     );
   }
