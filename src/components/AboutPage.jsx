@@ -123,6 +123,16 @@ const AboutPage = () => {
               </div>
             </div>
             <div className="flex items-start gap-3">
+              <span className="text-lg">🚀</span>
+              <div>
+                <h4 className="text-sm font-semibold text-gray-800">Ship Real Products</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Everything we build is deployed and used by the Jain community. Your work has
+                  real users, real impact — not just a college assignment.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
               <span className="text-lg">🕉️</span>
               <div>
                 <h4 className="text-sm font-semibold text-gray-800">Contribute to Jainism</h4>
@@ -133,12 +143,42 @@ const AboutPage = () => {
               </div>
             </div>
             <div className="flex items-start gap-3">
+              <span className="text-lg">🌐</span>
+              <div>
+                <h4 className="text-sm font-semibold text-gray-800">Grow Your Network</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Connect with like-minded Jain students, developers, designers, and entrepreneurs
+                  across India and beyond.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="text-lg">🧠</span>
+              <div>
+                <h4 className="text-sm font-semibold text-gray-800">Learn by Doing</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Work on live codebases, get peer reviews, and pick up industry skills — React,
+                  Firebase, PWA, UI/UX, and more — in a supportive environment.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="text-lg">🏅</span>
+              <div>
+                <h4 className="text-sm font-semibold text-gray-800">Get Recognised</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Contributors are credited in the app and on GitHub. Your name goes on work that
+                  the Jain community actively uses every day.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
               <span className="text-lg">🤝</span>
               <div>
                 <h4 className="text-sm font-semibold text-gray-800">Students &amp; Professionals Welcome</h4>
                 <p className="text-xs text-gray-600 leading-relaxed">
                   Whether you are in college or already working, JainZ has a project and a role
-                  that matches your skills and interests.
+                  that matches your skills and interests. Open to all, irrespective of religion.
                 </p>
               </div>
             </div>
