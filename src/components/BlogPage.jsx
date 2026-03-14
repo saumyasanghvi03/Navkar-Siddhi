@@ -6,6 +6,12 @@ import { useNav } from '../lib/navContext';
 const posts = [
   {
     date: 'Mar 2026',
+    tag: '🆕 March 2026 Update',
+    title: 'What\'s New in Navkar Siddhi — March 2026',
+    body: `This release is the biggest update to Navkar Siddhi yet. Here is everything that is new:\n\n✨ Jain Vibes — AI-Powered Spiritual Guidance\nA brand-new page powered by Google Gemini AI (via Genkit). Open it from the Vibes tab in the navigation bar.\n• Today's Jain Vibe — tap once to receive a fresh, AI-generated spiritual affirmation rooted in Jain philosophy, ahimsa, and the Navkar Mantra. Each vibe is unique to the day.\n• Ask the Guru — a conversational AI guide that answers your questions about the Navkar Mantra, Jain philosophy, meditation technique, mala practice, and more. Type any question or pick from the built-in suggestion chips.\n\n🔄 Auto-Refresh for All Open Tabs\nThe service worker now calls clients.claim() on activation, so every tab you have open — not just freshly opened ones — will receive the "New version available — refreshing in 3s…" banner and update automatically the moment a new release is deployed.\n\n🔗 LinkedIn on the Contact Page\nYou can now find a direct LinkedIn link to the developer (Saumya Sanghvi) in the Contact section, alongside the existing phone number.`,
+  },
+  {
+    date: 'Mar 2026',
     tag: '🔜 Coming Soon',
     title: 'Upcoming: Global Navkar Heatmap',
     body: `We are building a Global Navkar Heatmap — a live world map that lights up every country where Navkar Siddhi is being used right now.\n\nEvery time someone completes a Navkar anywhere on Earth, their country will glow on the map. Watch the practice spread across the globe in real time.\n\nThis feature is currently in development and will roll out in a future update. Stay tuned!`,

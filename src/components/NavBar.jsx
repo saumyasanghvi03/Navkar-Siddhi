@@ -9,6 +9,7 @@ const tabs = [
   { id: 'tapsetup', label: 'Tap', icon: '🎯' },
   { id: 'progress', label: 'Progress', icon: '📊' },
   { id: 'blog', label: 'Blog', icon: '✍️' },
+  { id: 'vibes', label: 'Vibes', icon: '✨' },
   { id: 'contact', label: 'Contact', icon: '📞' },
 ];
 
