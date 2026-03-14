@@ -1,5 +1,9 @@
 import { z } from 'genkit';
 import { ai } from './genkit';
+import Bytez from 'bytez.js';
+
+const bytez = new Bytez(process.env.BYTEZ_API_KEY || '');
+const model = bytez.model("openai/gpt-4.1-mini");
 
 const JAIN_SYSTEM_PROMPT = `You are a knowledgeable and compassionate Jain spiritual guide with deep knowledge of the Navkar Mantra, Jain philosophy, ahimsa, anekantavada, and meditation practices. Keep responses warm, accurate, and concise (3–5 sentences). Ground all answers in authentic Jain teachings.
 
@@ -17,12 +21,22 @@ export const askGuruFlow = ai.defineFlow(
     outputSchema: z.string(),
   },
   async (question) => {
-    const { text } = await ai.generate({
-      model: 'googleai/gemini-2.0-flash',
-      system: JAIN_SYSTEM_PROMPT,
-      prompt: question,
-    });
-    return text;
+    try {
+      const results = await model.run([
+        { role: "system", content: JAIN_SYSTEM_PROMPT },
+        { role: "user", content: question }
+      ]);
+
+      if (results.error) {
+        console.error('Bytez Guru Error:', results.error);
+        return GURU_FALLBACK_RESPONSE;
+      }
+
+      return results.output;
+    } catch (err) {
+      console.error('Bytez Guru Exception:', err);
+      return GURU_FALLBACK_RESPONSE;
+    }
   }
 );
 
@@ -37,11 +51,25 @@ export const dailyVibeFlow = ai.defineFlow(
       month: 'long',
       day: 'numeric',
     });
-    const { text } = await ai.generate({
-      model: 'googleai/gemini-2.0-flash',
-      prompt: `Generate a short, uplifting Jain-inspired spiritual affirmation for ${today}. It should be 2–3 sentences, grounded in Jain principles of ahimsa (non-violence), satya (truth), anekantavada (many-sidedness), and the Navkar Mantra. Make it feel personal and motivating for someone doing their daily meditation practice. Start with a relevant emoji.`,
-    });
-    return text;
+    
+    try {
+      const results = await model.run([
+        { 
+          role: "user", 
+          content: `Generate a short, uplifting Jain-inspired spiritual affirmation for ${today}. It should be 2–3 sentences, grounded in Jain principles of ahimsa (non-violence), satya (truth), anekantavada (many-sidedness), and the Navkar Mantra. Make it feel personal and motivating for someone doing their daily meditation practice. Start with a relevant emoji.`
+        }
+      ]);
+
+      if (results.error) {
+        console.error('Bytez Vibe Error:', results.error);
+        return JAIN_FALLBACK_VIBES[Math.floor(Math.random() * JAIN_FALLBACK_VIBES.length)];
+      }
+
+      return results.output;
+    } catch (err) {
+      console.error('Bytez Vibe Exception:', err);
+      return JAIN_FALLBACK_VIBES[Math.floor(Math.random() * JAIN_FALLBACK_VIBES.length)];
+    }
   }
 );
 
