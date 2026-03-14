@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useNav } from '../lib/navContext';
+import { useOnlineStatus } from '../hooks/useOnlineStatus';
 
 const SUGGESTION_CHIPS = [
   'What does Namo Arihantanam mean?',

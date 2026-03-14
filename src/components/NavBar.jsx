@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useNav } from '../lib/navContext';
+import ConnectivityIndicator from './ConnectivityIndicator';
 
 const tabs = [
   { id: 'jaap', label: 'Jaap', icon: '🙏' },
@@ -22,8 +23,10 @@ const NavBar = () => {
         <span className="text-sm font-serif font-bold text-orange-800 tracking-wide pl-2 hidden sm:block">
           Navkar Siddhi
         </span>
-        <div className="flex items-center gap-1 mx-auto sm:mx-0">
-          {tabs.map(t => (
+        <div className="flex items-center gap-3">
+          <ConnectivityIndicator />
+          <div className="flex items-center gap-1 mx-auto sm:mx-0">
+            {tabs.map(t => (
             <button
               key={t.id}
               onClick={() => setPage(t.id)}
