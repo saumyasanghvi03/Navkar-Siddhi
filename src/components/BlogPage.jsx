@@ -5,6 +5,12 @@ import { useNav } from '../lib/navContext';
 
 const posts = [
   {
+    date: 'Mar 2026',
+    tag: '🔜 Coming Soon',
+    title: 'Upcoming: Global Navkar Heatmap',
+    body: `We are building a Global Navkar Heatmap — a live world map that lights up every country where Navkar Siddhi is being used right now.\n\nEvery time someone completes a Navkar anywhere on Earth, their country will glow on the map. Watch the practice spread across the globe in real time.\n\nThis feature is currently in development and will roll out in a future update. Stay tuned!`,
+  },
+  {
     date: 'Feb 2026',
     tag: '🆕 Latest Update',
     title: 'Navkar Siddhi — New in This Release',
