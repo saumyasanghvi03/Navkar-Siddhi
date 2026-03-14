@@ -1,6 +1,8 @@
 import React from 'react';
 
-const LiveMetrics = ({ focus, calm, brainState }) => {
+const LiveMetrics = ({ enabled, focus, calm, brainState }) => {
+    if (!enabled) return null;
+
     // Define colors based on brainState
     const getColor = () => {
         switch (brainState) {

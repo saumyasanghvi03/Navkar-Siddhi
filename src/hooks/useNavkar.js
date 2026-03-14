@@ -34,7 +34,9 @@ export const useNavkar = () => {
     let sub;
     if (useMuseEnabled) {
       museManager.connect().catch(err => {
-        console.error('Muse connect error:', err);
+        if (err.name !== 'NotFoundError') {
+          console.error('Muse connect error:', err);
+        }
         setUseMuseEnabled(false); // Reset if failed
       });
 

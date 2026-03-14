@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { askGuruFlow } from '@/ai/flows';
+import { askGuruFlow, GURU_FALLBACK_RESPONSE, QUICK_ANSWERS } from '@/ai/flows';
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,13 +8,16 @@ export async function POST(request: NextRequest) {
     if (!question) {
       return NextResponse.json({ error: 'question is required' }, { status: 400 });
     }
+
+    // Check for quick static answers first
+    if (QUICK_ANSWERS[question]) {
+      return NextResponse.json({ answer: QUICK_ANSWERS[question], isQuickAnswer: true });
+    }
+
     const answer = await askGuruFlow(question.slice(0, 500));
     return NextResponse.json({ answer });
-  } catch (err) {
-    console.error('[ai/ask]', err);
-    return NextResponse.json(
-      { error: 'AI service unavailable. Please ensure GOOGLE_GENAI_API_KEY is configured.' },
-      { status: 503 }
-    );
+  } catch (err: any) {
+    console.warn('[ai/ask] AI service failed, using fallback:', err.message);
+    return NextResponse.json({ answer: GURU_FALLBACK_RESPONSE, isFallback: true });
   }
 }

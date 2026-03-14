@@ -363,12 +363,10 @@ function App() {
       )}
 
       {/* Live Metrics – visible when neuro mode enabled */}
-      {neuroModeEnabled && (
-        <LiveMetrics focus={focus} calm={calm} brainState={brainState} />
-      )}
+      <LiveMetrics enabled={neuroModeEnabled} focus={focus} calm={calm} brainState={brainState} />
 
       {/* Adaptive Audio – always active when neuro mode enabled */}
-      <AdaptiveAudio enabled={neuroModeEnabled} brainState={brainState} soundscape={activeSoundscape} />
+      <AdaptiveAudio enabled={activeSoundscape !== 'SILENT'} brainState={brainState} soundscape={activeSoundscape} />
 
       {/* Unlock Overlay */}
       {isLocked && (

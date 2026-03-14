@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Literata } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { Analytics } from "@vercel/analytics/next";
+import { Analytics } from "@vercel/analytics/react";
 
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
