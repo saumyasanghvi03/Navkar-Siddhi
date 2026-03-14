@@ -62,6 +62,10 @@ self.addEventListener('activate', (event) => {
                     }
                 })
             );
+        }).then(() => {
+            // Take control of all open pages immediately so the controllerchange
+            // event fires for every open tab, triggering the auto-refresh banner.
+            return self.clients.claim();
         })
     );
 });

@@ -20,6 +20,7 @@ import TapSetupPage from './components/TapSetupPage';
 import ProgressPage from './components/ProgressPage';
 import PrivacyPage from './components/PrivacyPage';
 import ContactPage from './components/ContactPage';
+import JainVibesPage from './components/JainVibesPage';
 import FocusMode from './components/FocusMode';
 import NavkarAudioPlayer from './components/NavkarAudioPlayer';
 import GlobalHeatmap from './components/GlobalHeatmap';
@@ -176,6 +177,15 @@ function App() {
       <>
         <NavBar />
         <BlogPage />
+      </>
+    );
+  }
+
+  if (page === 'vibes') {
+    return (
+      <>
+        <NavBar />
+        <JainVibesPage />
       </>
     );
   }
