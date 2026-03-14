@@ -209,6 +209,13 @@ export const useNavkar = () => {
       }
     } catch (_) { /* ignore tap log errors */ }
 
+    // Increment global counter (fire-and-forget — never blocks local UX)
+    fetch('/api/navkar', { method: 'POST' }).catch((err) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('[GlobalStats] API call failed:', err);
+      }
+    });
+
     setIsClearing(true);
     setTimeout(() => {
       setCurrentIndex(-1);
