@@ -40,7 +40,8 @@ const NavBar = () => {
               <span className="mr-1">{t.icon}</span>
               {t.label}
             </button>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </nav>
