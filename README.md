@@ -23,18 +23,29 @@ A meditative tapping app to help improve focus by writing a mantra word-by-word.
 - **Bhakti Music**: Integrated devotional music player with YouTube tracks.
 - **Mala Reset**: Reset current mala progress while preserving completed mala count.
 - **Lock Mode**: Hide controls for focused, distraction-free meditation.
-- **Jain Vibes ✨**: AI-powered spiritual affirmations and a "Guru" chat for Jain philosophy guidance.
-- **PWA Support**: Install as a mobile app on iOS/Android devices.
-- **Mobile Optimized**: Responsive design with safe area support for mobile webviews.
+- **Jain Vibes ✨**: AI-powered spiritual affirmations with a resilient fallback system for offline use.
+- **Ask the Guru 🙏**: Instant answers for common spiritual questions and AI-powered guidance for deeper inquiries.
+
+## Local Development
+
+To run the application locally on your machine:
+
+1.  **Clone the repository**: `git clone https://github.com/saumyasanghvi03/navkarsiddhi`
+2.  **Install dependencies**: `npm install`
+3.  **Run the dev server**: `npm run dev`
+4.  **Access the app**: The application starts on **[http://localhost:9003](http://localhost:9003)**.
 
 ## Configuration
 
-To enable AI features (**Jain Vibes** and **Ask the Guru**), you must configure the following environment variable in Vercel or your local `.env` file:
+To enable AI features (**Jain Vibes** and **Ask the Guru**), configure the following environment variable in Vercel or your local `.env` file:
 
-- \`GOOGLE_GENAI_API_KEY\`: Your Google Gemini API key. You can get one from the [Google AI Studio](https://aistudio.google.com/).
+- `GOOGLE_GENAI_API_KEY`: Your Google Gemini API key from [Google AI Studio](https://aistudio.google.com/).
+
+> [!NOTE]
+> If the API key is not configured, the app will automatically use high-quality **fallback affirmations** to ensure a seamless experience.
 
 ## Troubleshooting
 
-### AI Features Not Working
-- **Vibe Generation Fails**: Ensure `GOOGLE_GENAI_API_KEY` is correctly set in your environment variables. If you recently updated it on Vercel, you may need to redeploy the application for the changes to take effect.
-- **Guru No Response**: Check if the API key has sufficient quota and that the `googleai/gemini-2.0-flash` model is available in your region.
+### AI Features
+- **Vibe Generation**: If you recently updated environment variables on Vercel, you must **manual redeploy** the application for changes to take effect.
+- **Vercel Analytics**: If you encounter build errors related to `@vercel/analytics`, ensure the package is installed and imported as `@vercel/analytics/react`.
